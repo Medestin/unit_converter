@@ -18,13 +18,7 @@ public class Converter implements Conversion{
     public double convert(String input){
         ConverterDTO convertedInput = interpreter.interpret(input);
         this.units = UnitPicker.getMapSetBase(convertedInput.getFrom(), convertedInput.getTo());
-        String base;
-
-        try{
-            base = UnitPicker.getBase();
-        } catch (BaseNotSetException e){
-            throw new UnsupportedConversionException("Base is not set");
-        }
+        String base = setBase();
 
         if(convertedInput.getFrom().equals(convertedInput.getTo())){
             return convertedInput.getValue();
@@ -40,5 +34,13 @@ public class Converter implements Conversion{
 
     private double convertFromBase(double value, String to, String base) {
         return (to.equals(base)) ? value : value / units.get(to);
+    }
+
+    private String setBase(){
+       try{
+            return UnitPicker.getBase();
+        } catch (BaseNotSetException e){
+            throw new UnsupportedConversionException("Base is not set");
+        }
     }
 }
