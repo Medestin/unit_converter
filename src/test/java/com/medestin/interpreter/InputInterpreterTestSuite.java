@@ -1,5 +1,6 @@
 package com.medestin.interpreter;
 
+import com.medestin.converter.ConverterDTO;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,7 +13,7 @@ public class InputInterpreterTestSuite {
         InputInterpreter interpreter = new InputInterpreter();
         ConverterDTO data = interpreter.interpret(input);
 
-        assertEquals(16.0, data.getValue());
+        assertEquals(16.0, data.getValue(), 0.00000001);
         assertEquals("cm", data.getFrom());
         assertEquals("in", data.getTo());
     }
