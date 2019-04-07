@@ -1,12 +1,24 @@
 package com.medestin.converter;
 
-public class Converter {
+import com.medestin.interpreter.InputInterpreter;
+
+public class Converter implements Conversion{
+    private final InputInterpreter interpreter;
+
+    public Converter() {
+        this.interpreter = new InputInterpreter();
+    }
 
     public double convert(String input){
-        String[] arrayInput = input.split("[ ]");
-        double value = Double.parseDouble(arrayInput[0]);
-        String unitFrom = arrayInput[1];
-        String unitTo = arrayInput[2];
-        return value/2.205;
+        ConverterDTO convertedInput = interpreter.interpret(input);
+        return convertedInput.getValue()/2.205;
+    }
+
+    private double convertToBase(double value, String from){
+        return 0.0;
+    }
+
+    private double convertFromBase(double value, String to){
+        return 0.0;
     }
 }
