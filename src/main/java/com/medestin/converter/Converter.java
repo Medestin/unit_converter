@@ -1,5 +1,6 @@
 package com.medestin.converter;
 
+import com.medestin.exception.UnsupportedConversionException;
 import com.medestin.interpreter.InputInterpreter;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class Converter implements Conversion{
     public double convert(String input){
         ConverterDTO convertedInput = interpreter.interpret(input);
         if(!isConversionPossible(convertedInput.getFrom(), convertedInput.getTo())){
-            throw new RuntimeException("Unsupported conversion unit(s)");
+            throw new UnsupportedConversionException("Unsupported conversion unit(s)");
         }
 
         if(convertedInput.getFrom().equals(convertedInput.getTo())){

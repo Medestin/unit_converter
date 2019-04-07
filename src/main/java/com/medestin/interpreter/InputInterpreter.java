@@ -1,8 +1,7 @@
 package com.medestin.interpreter;
 
 import com.medestin.converter.ConverterDTO;
-
-import java.util.InputMismatchException;
+import com.medestin.exception.InvalidInputConventionException;
 
 public class InputInterpreter {
 
@@ -13,7 +12,7 @@ public class InputInterpreter {
     private ConverterDTO validate(String input){
         String[] splitInput = input.split("[ ]");
         if(splitInput.length != 3){
-            throw new InputMismatchException("Wrong input format, should be 'value unitFrom unitTo'");
+            throw new InvalidInputConventionException("Wrong input format, should be 'value unitFrom unitTo'");
         }
         double value = Double.parseDouble(splitInput[0]);
         String from = splitInput[1];
