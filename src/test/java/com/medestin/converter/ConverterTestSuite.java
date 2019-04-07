@@ -13,4 +13,12 @@ public class ConverterTestSuite {
         double result = converter.convert(input);
         assertEquals(1.814, result, 0.001);
     }
+
+    @Test
+    public void testLengthConversion(){
+        Converter converter = new Converter();
+        String input = "5 cm in";
+        double result = converter.convert(input);
+        assertEquals(1.968, result, 0.001);
+    }
 }
