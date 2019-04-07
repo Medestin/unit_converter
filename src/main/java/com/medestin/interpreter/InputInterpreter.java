@@ -2,9 +2,23 @@ package com.medestin.interpreter;
 
 import com.medestin.converter.ConverterDTO;
 
+import java.util.InputMismatchException;
+
 public class InputInterpreter {
 
     public ConverterDTO interpret(String input){
-        return new ConverterDTO(16.0, "cm", "in");
+        return validate(input);
+    }
+
+    private ConverterDTO validate(String input){
+        String[] splitInput = input.split("[ ]");
+        if(splitInput.length != 3){
+            throw new InputMismatchException("Wrong input format, should be 'value unitFrom unitTo'");
+        }
+        double value = Double.parseDouble(splitInput[0]);
+        String from = splitInput[1];
+        String to = splitInput[2];
+
+        return new ConverterDTO(value, from, to);
     }
 }
