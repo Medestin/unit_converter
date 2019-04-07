@@ -1,50 +1,44 @@
 package com.medestin.converter;
 
+import com.medestin.exception.BaseNotSetException;
 import com.medestin.exception.UnsupportedConversionException;
 import com.medestin.interpreter.InputInterpreter;
+import com.medestin.picker.UnitPicker;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Converter implements Conversion{
     private final InputInterpreter interpreter;
-    private final String BASE = "g";
-    private final Map<String, Double> units = new HashMap<>();
+    private Map<String, Double> units;
 
     public Converter() {
         this.interpreter = new InputInterpreter();
-        units.put(BASE, 1.0);
-        units.put("kg", 1000.0);
-        units.put("lb", 453.592);
     }
 
     public double convert(String input){
         ConverterDTO convertedInput = interpreter.interpret(input);
-        if(!isConversionPossible(convertedInput.getFrom(), convertedInput.getTo())){
-            throw new UnsupportedConversionException("Unsupported conversion unit(s)");
+        this.units = UnitPicker.getMapSetBase(convertedInput.getFrom(), convertedInput.getTo());
+        String base;
+
+        try{
+            base = UnitPicker.getBase();
+        } catch (BaseNotSetException e){
+            throw new UnsupportedConversionException("Base is not set");
         }
 
         if(convertedInput.getFrom().equals(convertedInput.getTo())){
             return convertedInput.getValue();
         }
 
-        double valueBase = convertToBase(convertedInput.getValue(), convertedInput.getFrom());
-        return convertFromBase(valueBase, convertedInput.getTo());
+        double valueBase = convertToBase(convertedInput.getValue(), convertedInput.getFrom(), base);
+        return convertFromBase(valueBase, convertedInput.getTo(), base);
     }
 
-    private double convertToBase(double value, String from){
-        return isBase(from) ? value : value*units.get(from);
+    private double convertToBase(double value, String from, String base){
+        return (from.equals(base)) ? value : value*units.get(from);
     }
 
-    private double convertFromBase(double value, String to){
-        return isBase(to) ? value : value/units.get(to);
-    }
-
-    private boolean isBase(String input){
-        return input.equals(BASE);
-    }
-
-    private boolean isConversionPossible(String from, String to){
-        return units.containsKey(from) && units.containsKey(to);
+    private double convertFromBase(double value, String to, String base) {
+        return (to.equals(base)) ? value : value / units.get(to);
     }
 }
